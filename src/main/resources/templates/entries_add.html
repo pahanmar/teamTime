@@ -8,9 +8,42 @@
 <form action="#" th:action="@{/entries}" th:object="${entry}" method="post">
     <label> Аннотация:</label>
     <input type="text" th:field="*{annotation}" required/>
-    <label>Время:</label>
-    <input type="text" th:field="*{time}" required/>
+    <div id="time_inputs">
+    <label>Часы:</label>
+    <input type="text" id="hours_time" required/>
+    <label>Минуты:</label>
+    <input type="text" id="minutes_time" required/>
+    <label>Секунды:</label>
+    <input type="text" id="seconds_time" required/>
+    <input type="hidden" th:field="*{time}"  id="time_result" required />
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
+            const inputsBox = document.getElementById('time_inputs');
+
+            const hoursInput = document.getElementById('hours_time');
+
+            const minutesInput = document.getElementById('minutes_time');
+
+            const secondsInput = document.getElementById('seconds_time');
+
+            const timeResult = document.getElementById('time_result');
+
+           const updateTimeResult = () => {
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            const seconds = parseInt(secondsInput.value) || 0;
+
+            const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+
+            timeResult.value = totalSeconds;
+        };
+
+            inputsBox.addEventListener('input', updateTimeResult);
+
+        });
+    </script>
     <label>Команда:</label>
     <select th:field="*{team.id}">
         <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
