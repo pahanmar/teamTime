@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Книги автора</title>
+</head>
+<body>
+<h2>Книги автора: <span th:text="${team.name}"></span></h2>
+<a th:href="@{/teams/new(team=${team.id})}">Добавить книгу</a>
+<ul>
+    <li th:each="entry : ${entries}">
+        <span th:text="${entry.time}">Название книги</span>
+    </li>
+</ul>
+<a th:href="@{/teams}">Вернуться к списку авторов</a>
+</body>
+</html>

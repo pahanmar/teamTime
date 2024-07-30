@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавить Книгу</title>
+</head>
+<body>
+<h2>Новая Книга</h2>
+<form action="#" th:action="@{/entries}" th:object="${entry}" method="post">
+    <label> Аннотация:</label>
+    <input type="text" th:field="*{annotation}" required/>
+    <label>Время:</label>
+    <input type="text" th:field="*{time}" required/>
+
+    <label>Команда:</label>
+    <select th:field="*{team.id}">
+        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+    </select>
+
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>
