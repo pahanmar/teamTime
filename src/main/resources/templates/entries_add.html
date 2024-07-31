@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Добавить Книгу</title>
+    <title>Добавить Запись</title>
 </head>
 <body>
-<h2>Новая Книга</h2>
+<h2>Новая Запись</h2>
 <form action="#" th:action="@{/entries}" th:object="${entry}" method="post">
     <label> Аннотация:</label>
     <input type="text" th:field="*{annotation}" required/>

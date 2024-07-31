@@ -45,6 +45,4 @@ public class EntryController {
         entryRepository.save(entry);
         return "redirect:/";
     }
-
-
 }

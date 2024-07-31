@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Книги автора</title>
+    <title>Результаты команды</title>
 </head>
 <body>
-<h2>Книги автора: <span th:text="${team.name}"></span></h2>
-<a th:href="@{/teams/new(team=${team.id})}">Добавить книгу</a>
+<h2>Команда: <span th:text="${team.name}"></span></h2>
 <ul>
-    <li th:each="entry : ${entries}">
-        <span th:text="${entry.time}">Название книги</span>
+    <li th:each="el : ${entries}">
+        <div>
+            <h2 th:text="${el.annotation}"></h2>
+            <p class="time-element" th:data-time="${el.time}" th:text="${el.time}"></p>
+            <script>
+                function secondsToTime(seconds) {
+                    seconds = Number(seconds);
+                    var h = Math.floor(seconds / 3600);
+                    var m = Math.floor((seconds % 3600) / 60);
+                    var s = Math.floor(seconds % 3600 % 60);
+
+                    h = (h < 10) ? '0' + h : h;
+                    m = (m < 10) ? '0' + m : m;
+                    s = (s < 10) ? '0' + s : s;
+
+                    return h + ':' + m + ':' + s;
+                }
+
+                document.addEventListener("DOMContentLoaded", function() {
+                    let timeElements = document.querySelectorAll('p.time-element');
+                    timeElements.forEach(function (element) {
+                        let seconds = element.getAttribute('data-time');
+                        element.textContent = secondsToTime(seconds);
+                    });
+                });
+            </script>
+        </div>
     </li>
 </ul>
-<a th:href="@{/teams}">Вернуться к списку авторов</a>
+<a th:href="@{/teams}">Вернуться к списку команд</a>
 </body>
 </html>

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import teamTime.models.Team;
+import teamTime.models.Entry;
 import teamTime.repo.EntryRepository;
 import teamTime.repo.TeamRepository;
 import teamTime.services.TeamEntriesService;
@@ -21,6 +22,10 @@ public class TeamController {
     @GetMapping("/teams")
     public String teamsMain(Model model) {
         Iterable<Team> teams = teamRepository.findAll();
+        for (Team team : teams) {
+            Long totalTime = team.getEntries().stream().mapToLong(Entry::getTime).sum();
+            team.setTime(totalTime);
+        }
         model.addAttribute("teams", teams);
         return "team_main";
     }
