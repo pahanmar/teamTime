@@ -2,80 +2,115 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Добавить Запись</title>
-<style>
-    body{
-        font-size: xxx-large;
-        }
-    input {
-        font-size: xxx-large;
-        margin: 15px 15px;
-        border: solid;
-        }
-    .button_submit{
-        padding: 25px;
-        margin: 0 auto;
-        display: block;
-        font-size: xx-large;
-        }
-    select{
-    font-size: xxx-large;
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+
+
+h2 {
+    text-align: center;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+label {
+    font-weight: bold;
+}
+
+
+input, select, button {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+time_inputs {
+
+display: flex;
+flex-direction: column;
+gap: 10px;
+
+}
+
+
+@media (min-width: 600px) {
+    #time_inputs {
+        flex-direction: row;
     }
-</style>
+
+
+label {
+    width: 120px;
+}
+
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+
+button:hover {
+    background-color: #45a049;
+}
+    </style>
 </head>
 <body>
 <h2>Новая Запись</h2>
 <form action="#" th:action="@{/entries}" th:object="${entry}" method="post">
-    <div>
-    <label> Аннотация:</label>
+    <label>Аннотация:</label>
     <input type="text" th:field="*{annotation}" required/>
+    <div id="time_inputs">
+        <label>Часы:</label>
+        <input type="text" id="hours_time" required/>
+        <label>Минуты:</label>
+        <input type="text" id="minutes_time" required/>
+        <label>Секунды:</label>
+        <input type="text" id="seconds_time" required/>
     </div>
-    <div>
-    <label>Часы:</label>
-    <input type="text" id="hours_time" required/>
-    </div>
-    <div>
-    <label>Минуты:</label>
-    <input type="text" id="minutes_time" required/>
-    </div>
-    <div>
-    <label>Секунды:</label>
-    <input type="text" id="seconds_time" required/>
-    </div>
-    <input type="hidden" th:field="*{time}"  id="time_result" required />
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const inputsBox = document.getElementById('time_inputs');
-
-            const hoursInput = document.getElementById('hours_time');
-
-            const minutesInput = document.getElementById('minutes_time');
-
-            const secondsInput = document.getElementById('seconds_time');
-
-            const timeResult = document.getElementById('time_result');
-
-           const updateTimeResult = () => {
-            const hours = parseInt(hoursInput.value) || 0;
-            const minutes = parseInt(minutesInput.value) || 0;
-            const seconds = parseInt(secondsInput.value) || 0;
-
-            const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
-
-            timeResult.value = totalSeconds;
-        };
-
-            inputsBox.addEventListener('input', updateTimeResult);
-
-        });
-    </script>
+    <input type="hidden" th:field="*{time}" id="time_result" required />
     <label>Команда:</label>
     <select th:field="*{team.id}">
         <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
     </select>
-    <div class="button_submit">
-    <button class="button_submit" type="submit">Сохранить</button>
-    </div>
+    <button type="submit">Сохранить</button>
 </form>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputsBox = document.getElementById('time_inputs');
+        const hoursInput = document.getElementById('hours_time');
+        const minutesInput = document.getElementById('minutes_time');
+        const secondsInput = document.getElementById('seconds_time');
+        const timeResult = document.getElementById('time_result');
+
+        const updateTimeResult = () => {
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            const seconds = parseInt(secondsInput.value) || 0;
+            const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+            timeResult.value = totalSeconds;
+        };
+
+        inputsBox.addEventListener('input', updateTimeResult);
+
+        document.querySelector('form').addEventListener('submit', updateTimeResult);
+    });
+</script>
 </body>
 </html>
