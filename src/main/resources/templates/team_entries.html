@@ -2,11 +2,103 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Результаты команды</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+
+        *,
+        *::after,
+        *::before {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-image: url("https://i.ibb.co/fnz1YKp/image.png");
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+        }
+
+        a {
+            display: flex;
+            justify-content: center;
+            text-decoration: none;
+            color: inherit;
+            font-size: xx-large;
+            background-color: #ffffff;
+            border-radius: inherit;
+            color: #080808;
+            padding: 15px;
+            vertical-align: middle;
+            margin: 50px;
+            }
+        .team_name {
+            text-align: center;
+            font-size: xx-large;
+            color: white;
+            }
+        ul {
+            margin: 25px;
+            list-style-type: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        .main_title {
+            margin: 50px auto;
+            color: white;
+            text-align: center;
+        }
+        .time-element {
+        font-size: xx-large;
+        }
+        .alert {
+            --bs-alert-padding-x: 1rem;
+            --bs-alert-padding-y: 1rem;
+            --bs-alert-margin-bottom: 1rem;
+            --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
+            --bs-alert-border-radius: var(--bs-border-radius);
+            --bs-alert-link-color: inherit;
+            position: relative;
+            padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
+            margin-bottom: var(--bs-alert-margin-bottom);
+            color: #000000;
+            background-color: #ffffff;
+            border: var(--bs-alert-border);
+            border-radius: var(--bs-alert-border-radius);
+        }
+        .team-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .entry_info {
+            border-style: solid;
+            border-color: white;
+            margin: auto;
+            color: white;
+            justify-content: space-between;
+            display: flex;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: x-large;
+            margin: 15px;
+        }
+    </style>
 </head>
+
 <body>
-<h2>Команда: <span th:text="${team.name}"></span></h2>
-<ul>
-    <li th:each="el : ${entries}">
+<div class="team_name">
+<h2>Команда: <span th:text="${team.name}" ></span></h2>
+</div>
+<ul >
+    <li th:each="el : ${entries}" class="entry_info">
         <div>
             <h2 th:text="${el.annotation}"></h2>
             <p class="time-element" th:data-time="${el.time}" th:text="${el.time}"></p>

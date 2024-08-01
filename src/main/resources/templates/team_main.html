@@ -1,19 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Общие результаты</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+
+        *,
+        *::after,
+        *::before {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+            font-size: x-large;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background-image: url("https://i.ibb.co/fnz1YKp/image.png");
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            font-size: xx-large;
+            background-color: #302f2f;
+            border-radius: inherit;
+            color: white;
+            padding: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        .main_title {
+            margin: 50px auto;
+            color: white;
+            text-align: center;
+        }
+        .time-element {
+        font-size: xx-large;
+        }
+        .alert {
+            --bs-alert-padding-x: 1rem;
+            --bs-alert-padding-y: 1rem;
+            --bs-alert-margin-bottom: 1rem;
+            --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
+            --bs-alert-border-radius: var(--bs-border-radius);
+            --bs-alert-link-color: inherit;
+            position: relative;
+            padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
+            margin-bottom: var(--bs-alert-margin-bottom);
+            color: #000000;
+            background-color: #ffffff;
+            border: var(--bs-alert-border);
+            border-radius: var(--bs-alert-border-radius);
+        }
+        .team-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Общий счет</h2>
+    <h2 class="main_title">Общий счет</h2>
 </div>
-<div th:each="el: ${teams}" class="alert alert-info">
-    <h3 th:text="${el.name}"></h3>
-    <h3 th:text="${el.color}"></h3>
-    <p th:text="${el.time}" class="time-element"></p>
+<div th:each="el: ${teams}" class="alert alert-info team-info">
+    <div>
+    <h3 th:text="${el.name}" class="name_text"></h3>
+    <p th:text="${el.time}" class="time-element" ></p>
+    </div>
     <a th:href="@{/teams/{id}(id=${el.id})}">Детальнее</a>
 </div>
 
@@ -31,7 +102,7 @@
         return h + ':' + m + ':' + s;
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         let timeElements = document.querySelectorAll('p.time-element');
         timeElements.forEach(function (element) {
             let seconds = element.textContent;
@@ -41,4 +112,3 @@
 </script>
 </body>
 </html>
-

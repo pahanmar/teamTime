@@ -2,21 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Добавить Запись</title>
+<style>
+    body{
+        font-size: xxx-large;
+        }
+    input {
+        font-size: xxx-large;
+        margin: 15px 15px;
+        border: solid;
+        }
+    .button_submit{
+        padding: 25px;
+        margin: 0 auto;
+        display: block;
+        font-size: xx-large;
+        }
+    select{
+    font-size: xxx-large;
+    }
+</style>
 </head>
 <body>
 <h2>Новая Запись</h2>
 <form action="#" th:action="@{/entries}" th:object="${entry}" method="post">
+    <div>
     <label> Аннотация:</label>
     <input type="text" th:field="*{annotation}" required/>
-    <div id="time_inputs">
+    </div>
+    <div>
     <label>Часы:</label>
     <input type="text" id="hours_time" required/>
+    </div>
+    <div>
     <label>Минуты:</label>
     <input type="text" id="minutes_time" required/>
+    </div>
+    <div>
     <label>Секунды:</label>
     <input type="text" id="seconds_time" required/>
-    <input type="hidden" th:field="*{time}"  id="time_result" required />
     </div>
+    <input type="hidden" th:field="*{time}"  id="time_result" required />
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -48,8 +73,9 @@
     <select th:field="*{team.id}">
         <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
     </select>
-
-    <button type="submit">Сохранить</button>
+    <div class="button_submit">
+    <button class="button_submit" type="submit">Сохранить</button>
+    </div>
 </form>
 </body>
 </html>
