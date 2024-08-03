@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:9.0.1
+    restart: "no"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: teams_time_db
+    healthcheck:
+      test: mysqladmin ping -u root -p$$MYSQL_ROOT_PASSWORD
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+
+  team-time:
+    image: team-time:latest
+    build:
+      dockerfile: Dockerfile
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: "no"
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DB_NAME: teams_time_db
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+
+volumes:
+  mysql_data:
