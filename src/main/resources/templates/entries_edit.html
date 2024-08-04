@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Entry</title>
+</head>
+<body>
+<h1>Edit Entry</h1>
+<form action="#" th:object="${entry}" th:action="@{/entries/update/{id}(id=${entry.id})}" method="post">
+    <label for="annotation">Annotation:</label>
+    <input type="text" id="annotation" th:field="*{annotation}">
+    <br>
+    <label for="time">Time:</label>
+    <input type="number" id="time" th:field="*{time}">
+    <br>
+    <label for="team">Team:</label>
+    <select id="team" th:field="*{team}">
+        <option th:each="team: ${teams}" th:value="${team}" th:text="${team.name}">Team</option>
+    </select>
+    <br>
+    <input type="submit" value="Update">
+</form>
+</body>
+</html>

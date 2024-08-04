@@ -57,5 +57,3 @@ public class TeamController {
         return "team_entries";
     }
 }
-
-
