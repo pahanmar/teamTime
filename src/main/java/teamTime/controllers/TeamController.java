@@ -56,4 +56,19 @@ public class TeamController {
         model.addAttribute("entries", entryRepository.findByTeamId(id));
         return "team_entries";
     }
+
+    @DeleteMapping("/teams/{id}")
+    public String deleteTeam(@PathVariable Long id) {
+        Team team = teamRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid team Id:" + id));
+        teamRepository.delete(team);
+        return "redirect:/teams/delete"; // Redirecting to the deletion page after deletion
+    }
+
+    @GetMapping("/teams/delete")
+    public String teamsDelete(Model model) {
+        Iterable<Team> teams = teamRepository.findAll();
+        model.addAttribute("teams", teams);
+        return "team_delete";
+    }
 }
+
