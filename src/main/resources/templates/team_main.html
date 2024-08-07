@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
-
         *,
         *::after,
         *::before {
@@ -17,7 +16,6 @@
             padding: 0;
             font-size: x-large;
         }
-
         html,
         body {
             height: 100%;
@@ -25,7 +23,6 @@
             font-family: 'Montserrat', sans-serif;
             font-weight: 300;
         }
-
         a {
             text-decoration: none;
             color: inherit;
@@ -35,24 +32,21 @@
             color: white;
             padding: 15px;
         }
-
         ul {
             list-style-type: none;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 10px;
         }
-
         .main_title {
             margin: 50px auto;
             color: white;
             text-align: center;
         }
         .time-element {
-        font-size: xx-large;
+            font-size: xx-large;
         }
         .alert {
             --bs-alert-padding-x: 1rem;
@@ -82,8 +76,8 @@
 </div>
 <div th:each="el: ${teams}" class="alert alert-info team-info">
     <div>
-    <h3 th:text="${el.name}" class="name_text"></h3>
-    <p th:text="${el.time}" class="time-element" ></p>
+        <h3 th:text="${el.name}" class="name_text"></h3>
+        <p th:text="${el.time}" class="time-element"></p>
     </div>
     <a th:href="@{/teams/{id}(id=${el.id})}">Детальнее</a>
 </div>
@@ -91,6 +85,8 @@
 <script>
     function secondsToTime(seconds) {
         seconds = Number(seconds);
+        var isNegative = seconds < 0;
+        seconds = Math.abs(seconds);
         var h = Math.floor(seconds / 3600);
         var m = Math.floor((seconds % 3600) / 60);
         var s = Math.floor(seconds % 3600 % 60);
@@ -99,7 +95,7 @@
         m = (m < 10) ? '0' + m : m;
         s = (s < 10) ? '0' + s : s;
 
-        return h + ':' + m + ':' + s;
+        return (isNegative ? '-' : '') + h + ':' + m + ':' + s;
     }
 
     document.addEventListener("DOMContentLoaded", function () {

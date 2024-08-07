@@ -17,32 +17,53 @@ public class EntryController {
     private EntryRepository entryRepository;
 
     @Autowired
-    private TeamEntriesService teamEntriesService;
-
-    @Autowired
     private TeamRepository teamRepository;
 
     @GetMapping("/entries")
-    public String entriesMain(Model model){
-        Iterable<Entry> entries = entryRepository.findAll();
-        model.addAttribute("entries",entries);
-        return "team_main";
+    public String entriesMain(@RequestParam(required = false) Long teamId, Model model) {
+        Iterable<Entry> entries;
+        if (teamId != null) {
+            Team team = teamRepository.findById(teamId).orElse(new Team());
+            entries = entryRepository.findByTeam(team);
+            model.addAttribute("filterTeam", team);
+        } else {
+            entries = entryRepository.findAll();
+        }
+        model.addAttribute("entries", entries);
+        model.addAttribute("teams", teamRepository.findAll());
+        return "entries";
     }
-    @GetMapping("entries/add")
+
+    @GetMapping("/entries/add")
     public String showEntryForm(Model model) {
         model.addAttribute("entry", new Entry());
         model.addAttribute("teams", teamRepository.findAll());
         return "entries_add";
     }
+
     @PostMapping("/entries")
     public String saveEntry(@ModelAttribute Entry entry) {
-        teamEntriesService.saveEntries(entry);
-        return "redirect:/";
-        }
-    @PostMapping("/entries/add")
-    public String entryPostAdd(@RequestParam String annotation, @RequestParam Long time,@RequestParam Team team, Model model) {
-        Entry entry = new Entry(annotation, time, team);
         entryRepository.save(entry);
-        return "redirect:/";
+        return "redirect:/entries";
+    }
+
+    @GetMapping("/entries/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Entry entry = entryRepository.findById(id).orElse(new Entry());
+        model.addAttribute("entry", entry);
+        model.addAttribute("teams", teamRepository.findAll());
+        return "entries_edit";
+    }
+
+    @PostMapping("/entries/edit")
+    public String editEntry(@ModelAttribute Entry entry) {
+        entryRepository.save(entry);
+        return "redirect:/entries";
+    }
+
+    @GetMapping("/entries/delete/{id}")
+    public String deleteEntry(@PathVariable("id") Long id) {
+        entryRepository.deleteById(id);
+        return "redirect:/entries";
     }
 }

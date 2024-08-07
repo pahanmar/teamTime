@@ -1,24 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            form {
+                width: 100%;
+            }
+        }
+    </style>
+    <script>
+        function convertTimeToSeconds() {
+            let hours = parseInt(document.getElementById('hours').value) || 0;
+            let minutes = parseInt(document.getElementById('minutes').value) || 0;
+            let seconds = parseInt(document.getElementById('seconds').value) || 0;
+
+            let totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+            document.getElementById('time').value = totalSeconds;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            convertTimeToSeconds();
+            event.target.submit();
+        }
+    </script>
 </head>
 <body>
 <h1>Edit Entry</h1>
-<form action="#" th:object="${entry}" th:action="@{/entries/update/{id}(id=${entry.id})}" method="post">
+<form th:action="@{/entries/edit}" th:object="${entry}" method="post" onsubmit="handleSubmit(event)">
+    <input type="hidden" th:field="*{id}">
     <label for="annotation">Annotation:</label>
-    <input type="text" id="annotation" th:field="*{annotation}">
-    <br>
-    <label for="time">Time:</label>
-    <input type="number" id="time" th:field="*{time}">
-    <br>
+    <input type="text" id="annotation" th:field="*{annotation}" required>
+
+    <label for="hours">Hours:</label>
+    <input type="number" id="hours" min="0">
+
+    <label for="minutes">Minutes:</label>
+    <input type="number" id="minutes" min="0" max="59">
+
+    <label for="seconds">Seconds:</label>
+    <input type="number" id="seconds" min="0" max="59">
+
+    <!-- Hidden field to store the converted time in seconds -->
+    <input type="hidden" id="time" th:field="*{time}" required>
+
     <label for="team">Team:</label>
-    <select id="team" th:field="*{team}">
-        <option th:each="team: ${teams}" th:value="${team}" th:text="${team.name}">Team</option>
+    <select id="team" th:field="*{team.id}">
+        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
     </select>
-    <br>
-    <input type="submit" value="Update">
+    <button type="submit">Update</button>
 </form>
 </body>
 </html>

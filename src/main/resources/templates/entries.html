@@ -1,28 +1,167 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Entries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            font-size: 18px; /* Increase font size */
+            padding: 10px 20px; /* Increase padding */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            overflow: hidden; /* This will enable rounding corners */
+            border-radius: 8px; /* Add rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+            margin: 0 auto; /* Center align table */
+        }
+
+        th, td {
+            padding: 18px; /* Increase padding */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            font-size: 18px; /* Increase font size */
+        }
+
+        td {
+            background: white;
+            font-size: 18px; /* Increase font size */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px; /* Increase padding */
+            font-size: 18px; /* Increase font size */
+            margin: 5px 0; /* Add margin */
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+            table {
+                width: 100%;
+                border: 0;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+                background: white; /* White background for mobile rows */
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding: 10px 20px;
+                font-size: 18px; /* Increase font size */
+                border: none;
+                position: relative;
+                padding-left: 50%; /* Style to make it look like before */
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-right: 10px;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+    <script>
+        function formatTime(seconds) {
+            const sign = seconds < 0 ? '-' : '';
+            seconds = Math.abs(seconds);
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${sign}${hrs}h ${mins}m ${secs}s`;
+        }
+
+        window.onload = function() {
+            const timeElements = document.querySelectorAll('.time-cell');
+            timeElements.forEach(function(el) {
+                const seconds = parseInt(el.innerText, 10);
+                el.innerText = formatTime(seconds);
+            });
+        }
+    </script>
 </head>
 <body>
-<h1>Entries</h1>
+<h1>Записи</h1>
+<form th:action="@{/entries}" method="get">
+    <select name="teamId">
+        <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
 <table>
+    <thead>
     <tr>
-        <th>Annotation</th>
-        <th>Time</th>
-        <th>Team</th>
-        <th>Actions</th>
+        <th>ID</th>
+        <th>Аннотация</th>
+        <th>Время</th>
+        <th>Команда</th>
+        <th>Действия</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="entry : ${entries}">
-        <td th:text="${entry.annotation}">Annotation</td>
-        <td th:text="${entry.time}">Time</td>
-        <td th:text="${entry.team.name}">Team</td>
-        <td>
-            <a th:href="@{/entries/edit/{id}(id=${entry.id})}">Edit</a>
-            <a th:href="@{/entries/delete/{id}(id=${entry.id})}">Delete</a>
+        <td data-label="ID" th:text="${entry.id}"></td>
+        <td data-label="Annotation" th:text="${entry.annotation}"></td>
+        <td class="time-cell" data-label="Time" th:text="${entry.time}"></td>
+        <td data-label="Team" th:text="${entry.team.name}"></td>
+        <td data-label="Actions">
+            <a th:href="@{/entries/edit/{id}(id=${entry.id})}" class="btn">Изменить</a>
+            <a th:href="@{/entries/delete/{id}(id=${entry.id})}" class="btn">Удалить</a>
         </td>
     </tr>
+    </tbody>
 </table>
-<a href="/entries/add">Add Entry</a>
+<a href="/entries/add" class="btn">Добавить запись</a>
+<a href="/" class="btn">Вернуться</a>
 </body>
 </html>

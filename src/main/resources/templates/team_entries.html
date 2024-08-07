@@ -95,7 +95,7 @@
 
 <body>
 <div class="team_name">
-<h2>Команда: <span th:text="${team.name}" ></span></h2>
+    <h2>Команда: <span th:text="${team.name}" ></span></h2>
 </div>
 <ul >
     <li th:each="el : ${entries}" class="entry_info">
@@ -105,6 +105,9 @@
             <script>
                 function secondsToTime(seconds) {
                     seconds = Number(seconds);
+                    var negative = seconds < 0;
+                    seconds = Math.abs(seconds);
+
                     var h = Math.floor(seconds / 3600);
                     var m = Math.floor((seconds % 3600) / 60);
                     var s = Math.floor(seconds % 3600 % 60);
@@ -113,7 +116,7 @@
                     m = (m < 10) ? '0' + m : m;
                     s = (s < 10) ? '0' + s : s;
 
-                    return h + ':' + m + ':' + s;
+                    return (negative ? '-' : '') + h + ':' + m + ':' + s;
                 }
 
                 document.addEventListener("DOMContentLoaded", function() {
